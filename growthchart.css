@@ -14,8 +14,14 @@ body {
   stroke-width: 1.5px;
 }
 
+.pLine {
+  fill: none;
+  stroke: black;
+  stroke-width: 1.5px;
+}
+
 .area {
-  fill: red;
+  fill: steelblue;
   opacity: 0.2;
 }
 
@@ -23,6 +29,12 @@ body {
 .dot {
   fill: black;
   stroke: black;
+  stroke-width: 1.5px;
+}
+
+.dotSelected {
+  fill: rgb(237,126,30);
+  stroke: rgb(237,126,30);
   stroke-width: 1.5px;
 }
 
@@ -36,4 +48,22 @@ body {
 .axis text {
     font-family: sans-serif;
     font-size: 11px;
+}
+
+/* http://bl.ocks.org/biovisualize/2973775 */
+.tooltip{ 
+  background-color:rgb(237,126,30);
+  background-color:rgba(237,126,30,0.5);
+  
+  /*padding-left: 10px;*/
+  text-align: center;
+  
+  margin: 10px;
+  height: 32px;
+  width: 100px;
+  
+  padding-top: 10px;
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
 }

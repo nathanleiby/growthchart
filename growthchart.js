@@ -3,7 +3,61 @@ Ideas:
 -Take a simply formatted JSON of expected growths, to plot x against y
 -Work for weight vs age, height vs age, height vs weight, etc etc
 -Work against various standards (CDC, WHO, national goverments)
+
+Todos:
+-Default is to select the last datum; highlight it and show tooltip
+-Improved tickmarks
+-Labels on the lines, or a legend (%tile, malnourished/severely/normal); color for different lines
+-Support for ages 5 years to 20 years
 */
+
+// Tooltip code from:
+// http://rveciana.github.com/geoexamples/d3js/d3js_electoral_map/tooltipCode.html#
+// http://rveciana.github.com/geoexamples/?page=d3js/d3js_electoral_map/simpleTooltipCode.html
+// http://bl.ocks.org/biovisualize/2973775
+d3.helper = {};
+
+d3.helper.tooltip = function(accessor) {
+  return function(selection) {
+    var tooltipDiv;
+    var bodyNode = d3.select('body').node();
+    selection.on("mouseover", function(d, i) {
+      // Select current dot, unselect others
+      d3.selectAll("circle.dotSelected").attr("class", "dot");
+      d3.select(this).attr("class", "dotSelected");
+
+      // Clean up lost tooltips
+      d3.select('body').selectAll('div.tooltip').remove();
+      // Append tooltip
+      tooltipDiv = d3.select('body').append('div').attr('class', 'tooltip');
+
+      tooltipDiv.style('left', (50) + 'px')
+        .style('top', (50) + 'px')
+        .style('position', 'absolute')
+        .style('z-index', 1001);
+
+      // Add text using the accessor function
+      var tooltipText = accessor(d, i) || '';
+      // Crop text arbitrarily
+      tooltipDiv
+        .style('width', function(d, i) {
+          return (tooltipText.length > 80) ? '300px' : null;
+        })
+        .html(tooltipText);
+    })
+      .on('mousemove', function(d, i) {
+      var tooltipText = accessor(d, i) || '';
+      tooltipDiv.html(tooltipText);
+    })
+    //   .on("mouseout", function(d, i) {
+    //   // Remove tooltip
+    //   tooltipDiv.remove();
+    // })
+    ;
+  };
+};
+
+var svg;
 
 function display_growth_chart(patient, el) {
 
@@ -52,7 +106,7 @@ function display_growth_chart(patient, el) {
   var data = [
   normal,
   malnourished,
-  severely_malnourished, ];
+  severely_malnourished];
 
   // Boundaries for graph, based on growth chart bounds
   var yMax = 20; // weight, in kg
@@ -89,7 +143,7 @@ function display_growth_chart(patient, el) {
     .y1(line.y())
     .y0(yScale(0));
 
-  var svg = d3.select(el).append("svg")
+  svg = d3.select(el).append("svg")
     .attr("width", WIDTH)
     .attr("height", HEIGHT);
 
@@ -109,13 +163,27 @@ function display_growth_chart(patient, el) {
 
   // Patient's data
 
+  // Add line for the patient's growth
+  var linesP = svg.selectAll("pG")
+    .data([patient])
+    .attr("class", "pG")
+    .enter();
+  linesP.append("path")
+    .attr("class", "pLine")
+    .attr("d", line);
+
   // Dots at each data point
-  svg.selectAll("dot")
+  var dots = svg.selectAll("dot")
     .data(patient)
     .enter()
     .append("circle")
     .attr("class", "dot")
-    .attr("cx", function(d, i) {
+  // .on("mouseover", mouseoverDot)
+  .call(d3.helper.tooltip(function(d, i) {
+    return tooltipText(d);
+  }))
+  // .on("mouseout", mouseoutDot)
+  .attr("cx", function(d, i) {
     return xScale(d[0]);
   })
     .attr("cy", function(d, i) {
@@ -124,14 +192,6 @@ function display_growth_chart(patient, el) {
     .attr("r", function(d) {
     return 4;
   });
-
-  // Add line for the patient's growth
-  var linesP = svg.selectAll("pG")
-    .data([patient])
-    .enter();
-  linesP.append("path")
-    .attr("class", "line")
-    .attr("d", line);
 
   // Add axes
 
@@ -160,4 +220,43 @@ function display_growth_chart(patient, el) {
   svg.append("g")
     .attr("class", "axis")
     .call(yAxis);
+
+  // function mouseoverDot(d, i) {
+  //   // Update text
+  //   var age_in_months = d[0];
+  //   var weight_in_kg = d[1].toFixed(1);
+  //   var text = 'Age: ' + getAgeText(age_in_months) + '; ' + 'Weight: ' + weight_in_kg + 'kg';
+  //   dotText.text(text);
+
+  //   // Unselect other dots
+  //   dots.attr("class", "dot");
+
+  //   // Highlight the dot 
+  //   d3.select(this).attr("class", "dotSelected");
+  // }
+
+  function tooltipText(d) {
+    var age_in_months = d[0];
+    var weight_in_kg = d[1].toFixed(1);
+    var textAge = 'Age: ' + getAgeText(age_in_months);
+    var textWeight = 'Weight: ' + weight_in_kg + 'kg';
+    var text = textAge + '<br />' + textWeight;
+
+    return "<b>" + text + "</b>";
+  }
+
+  // @param months - age in months (float)
+  // @return - age (<years>y, <months>m) (string)
+
+  function getAgeText(months) {
+    var y = Math.floor(months / 12);
+    var m = months - (y * 12);
+    m = m.toFixed(1);
+
+    if (y > 0) {
+      return y + 'y, ' + m + 'm';
+    } else {
+      return m + 'm';
+    }
+  }
 }
