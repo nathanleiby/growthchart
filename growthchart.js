@@ -31,7 +31,7 @@ d3.helper.tooltip = function(accessor) {
       // Append tooltip
       tooltipDiv = d3.select('body').append('div').attr('class', 'tooltip');
 
-      tooltipDiv.style('left', (50) + 'px')
+      tooltipDiv.style('left', (100) + 'px')
         .style('top', (50) + 'px')
         .style('position', 'absolute')
         .style('z-index', 1001);
@@ -56,8 +56,6 @@ d3.helper.tooltip = function(accessor) {
     ;
   };
 };
-
-var svg;
 
 function display_growth_chart(patient, el) {
 
@@ -113,18 +111,20 @@ function display_growth_chart(patient, el) {
   var xMax = 60; // time, in # of months
 
   // Graph formatting, in pixels
-  var WIDTH = 625;
-  var HEIGHT = 350;
-  var PADDING = 1;
+  var width = 625;
+  var height = 350;
+  var padding = 50;
 
   // Graph scale; domain and range
   var xScale = d3.scale.linear()
     .domain([0, xMax])
-    .range([0, WIDTH]);
+    // .range([0, width]);
+    .range([padding, width - padding]);
 
   var yScale = d3.scale.linear()
     .domain([0, yMax])
-    .range([HEIGHT, 0]);
+    // .range([height, 0]);
+    .range([height - padding, padding]);
 
   // Line generating function
   var line = d3.svg.line()
@@ -143,9 +143,9 @@ function display_growth_chart(patient, el) {
     .y1(line.y())
     .y0(yScale(0));
 
-  svg = d3.select(el).append("svg")
-    .attr("width", WIDTH)
-    .attr("height", HEIGHT);
+  var svg = d3.select(el).append("svg")
+    .attr("width", width)
+    .attr("height", height);
 
   // Baseline growth curves
   var lines = svg.selectAll("g")
@@ -199,33 +199,49 @@ function display_growth_chart(patient, el) {
   var xAxis = d3.svg.axis();
   xAxis.scale(d3.scale.linear()
     .domain([0, xMax])
-    .range([0, WIDTH]));
-  xAxis.orient("top")
+    .range([0, width - padding*2]));
+  xAxis.orient("bottom")
     .ticks(10);
 
   svg.append("g")
     .attr("class", "axis")
-    .attr("transform", "translate(0," + (HEIGHT - PADDING) + ")")
+    .attr("transform", "translate(" + padding + "," + (height - padding) + ")")
     .call(xAxis);
 
   // y-axis
   var yAxis = d3.svg.axis()
     .scale(d3.scale.linear()
     .domain([0, yMax])
-    .range([HEIGHT, 0]));
+    .range([height-padding, 0]));
 
-  yAxis.orient("right")
+  yAxis.orient("left")
     .ticks(10);
 
   svg.append("g")
     .attr("class", "axis")
+    .attr("transform", "translate(" + padding + ",0)")
     .call(yAxis);
+
+  svg.selectAll(".xaxis text")  // select all the text elements for the xaxis
+          .attr("transform", function(d) {
+             return "translate(" + this.getBBox().height*-2 + "," + this.getBBox().height + ")rotate(-45)";
+         });
+
+  svg.append("text")
+    .attr("text-anchor", "middle")
+    .attr("transform", "translate("+ (padding/2) +","+(height/2)+")rotate(-90)")
+    .text("Weight (kg)");
+
+  svg.append("text")
+    .attr("text-anchor", "middle")
+    .attr("transform", "translate("+ (width/2) +","+(height-(padding/3))+")")  
+    .text("Age (months)");
 
   // function mouseoverDot(d, i) {
   //   // Update text
   //   var age_in_months = d[0];
   //   var weight_in_kg = d[1].toFixed(1);
-  //   var text = 'Age: ' + getAgeText(age_in_months) + '; ' + 'Weight: ' + weight_in_kg + 'kg';
+  //   var text = 'Age: ' + getAgeText(age_in_months) + '; ' + 'weight: ' + weight_in_kg + 'kg';
   //   dotText.text(text);
 
   //   // Unselect other dots
@@ -239,8 +255,8 @@ function display_growth_chart(patient, el) {
     var age_in_months = d[0];
     var weight_in_kg = d[1].toFixed(1);
     var textAge = 'Age: ' + getAgeText(age_in_months);
-    var textWeight = 'Weight: ' + weight_in_kg + 'kg';
-    var text = textAge + '<br />' + textWeight;
+    var textweight = 'Weight: ' + weight_in_kg + 'kg';
+    var text = textAge + '<br />' + textweight;
 
     return "<b>" + text + "</b>";
   }
