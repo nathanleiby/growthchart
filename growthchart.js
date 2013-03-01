@@ -9,53 +9,13 @@ Todos:
 -Improved tickmarks
 -Labels on the lines, or a legend (%tile, malnourished/severely/normal); color for different lines
 -Support for ages 5 years to 20 years
-*/
-
-// Tooltip code from:
+-Improve tooltip style
 // http://rveciana.github.com/geoexamples/d3js/d3js_electoral_map/tooltipCode.html#
 // http://rveciana.github.com/geoexamples/?page=d3js/d3js_electoral_map/simpleTooltipCode.html
 // http://bl.ocks.org/biovisualize/2973775
-d3.helper = {};
+*/
 
-d3.helper.tooltip = function(accessor) {
-  return function(selection) {
-    var tooltipDiv;
-    var bodyNode = d3.select('body').node();
-    selection.on("mouseover", function(d, i) {
-      // Select current dot, unselect others
-      d3.selectAll("circle.dotSelected").attr("class", "dot");
-      d3.select(this).attr("class", "dotSelected");
 
-      // Clean up lost tooltips
-      d3.select('body').selectAll('div.tooltip').remove();
-      // Append tooltip
-      tooltipDiv = d3.select('body').append('div').attr('class', 'tooltip');
-
-      tooltipDiv.style('left', (100) + 'px')
-        .style('top', (50) + 'px')
-        .style('position', 'absolute')
-        .style('z-index', 1001);
-
-      // Add text using the accessor function
-      var tooltipText = accessor(d, i) || '';
-      // Crop text arbitrarily
-      tooltipDiv
-        .style('width', function(d, i) {
-          return (tooltipText.length > 80) ? '300px' : null;
-        })
-        .html(tooltipText);
-    })
-      .on('mousemove', function(d, i) {
-      var tooltipText = accessor(d, i) || '';
-      tooltipDiv.html(tooltipText);
-    })
-    //   .on("mouseout", function(d, i) {
-    //   // Remove tooltip
-    //   tooltipDiv.remove();
-    // })
-    ;
-  };
-};
 
 function display_growth_chart(patient, el) {
 
@@ -183,7 +143,8 @@ function display_growth_chart(patient, el) {
     .append("circle")
     .attr("class", "dot")
   // .on("mouseover", mouseoverDot)
-  .call(d3.helper.tooltip(function(d, i) {
+  .call(dotHandler(function(d, i) {
+    // console.log('helper', el);
     return tooltipText(d);
   }))
   // .on("mouseout", mouseoutDot)
@@ -246,47 +207,53 @@ function display_growth_chart(patient, el) {
   // Extremity labels (Normal, Malnourished, and Severely Malnourished)
   svg.append("text")
     .attr("class","line-label")
-    .attr("transform", "translate("+ (width-padding) +","+(100)+")")
+    .attr("transform", "translate("+ (width-padding+5) +","+(100)+")")
     .text("Normal");
 
   svg.append("text")
     .attr("class","line-label")
-    .attr("transform", "translate("+ (width-padding) +","+(140)+")")
+    .attr("transform", "translate("+ (width-padding+5) +","+(140)+")")
     .text("Malnourished");
 
   svg.append("text")
     .attr("class","line-label")
-    .attr("transform", "translate("+ (width-padding) +","+(175)+")")
+    .attr("transform", "translate("+ (width-padding+5) +","+(175)+")")
     .text("Severely Malnourished");
 
-  // function mouseoverDot(d, i) {
-  //   // Update text
-  //   var age_in_months = d[0];
-  //   var weight_in_kg = d[1].toFixed(1);
-  //   var text = 'Age: ' + getAgeText(age_in_months) + '; ' + 'weight: ' + weight_in_kg + 'kg';
-  //   dotText.text(text);
+  var tooltipEl = svg.append("text")
+    // .attr("class","tooltip")
+    .attr("transform", "translate("+ (padding*2) +","+(padding)+")")
+    .style("font-size","14px")
+    .text("");
 
-  //   // Unselect other dots
-  //   dots.attr("class", "dot");
+  function dotHandler(accessor) {
+    return function(selection) {
+      selection.on("mouseover", function(d, i) {
+        // Select current dot, unselect others
+        d3.selectAll("circle.dotSelected").attr("class", "dot");
+        d3.select(this).attr("class", "dotSelected");
 
-  //   // Highlight the dot 
-  //   d3.select(this).attr("class", "dotSelected");
-  // }
+        // Add text using the accessor function
+        var tooltipText = accessor(d, i) || '';
+        tooltipEl.text(tooltipText);
+      });
+    };
+  }
 
   function tooltipText(d) {
-    var age_in_months = d[0];
-    var weight_in_kg = d[1].toFixed(1);
+    var age_in_months = parseFloat(d[0]);
+    var weight_in_kg = parseFloat(d[1]).toFixed(1);
     var textAge = 'Age: ' + getAgeText(age_in_months);
     var textweight = 'Weight: ' + weight_in_kg + 'kg';
-    var text = textAge + '<br />' + textweight;
+    var text = textAge + '; ' + textweight;
 
-    return "<b>" + text + "</b>";
+    return text;
   }
 
   // @param months - age in months (float)
   // @return - age (<years>y, <months>m) (string)
 
-  function getAgeText(months) {
+  function getAgeText(months){
     var y = Math.floor(months / 12);
     var m = months - (y * 12);
     m = m.toFixed(1);
