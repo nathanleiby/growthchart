@@ -144,7 +144,7 @@ function display_growth_chart(patient, el) {
     .y0(yScale(0));
 
   var svg = d3.select(el).append("svg")
-    .attr("width", width)
+    .attr("width", width*2)
     .attr("height", height);
 
   // Baseline growth curves
@@ -160,6 +160,10 @@ function display_growth_chart(patient, el) {
     .attr("class", "line")
     .attr("d", line);
 
+  // svg.append("text")
+  //   .attr("text-anchor", "middle")
+  //   .attr("transform", "translate("+ (width/2) +","+(height-(padding/3))+")")  
+  //   .text("Age (months)");
 
   // Patient's data
 
@@ -189,9 +193,10 @@ function display_growth_chart(patient, el) {
     .attr("cy", function(d, i) {
     return yScale(d[1]);
   })
-    .attr("r", function(d) {
-    return 4;
-  });
+  //   .attr("r", function(d) {
+  //   return 1;
+  // })
+    .attr("r", 4);
 
   // Add axes
 
@@ -227,15 +232,32 @@ function display_growth_chart(patient, el) {
              return "translate(" + this.getBBox().height*-2 + "," + this.getBBox().height + ")rotate(-45)";
          });
 
+  // Axes text
   svg.append("text")
     .attr("text-anchor", "middle")
-    .attr("transform", "translate("+ (padding/2) +","+(height/2)+")rotate(-90)")
+    .attr("transform", "translate("+ (padding/3) +","+(height-padding)/2+")rotate(-90)")
     .text("Weight (kg)");
 
   svg.append("text")
     .attr("text-anchor", "middle")
-    .attr("transform", "translate("+ (width/2) +","+(height-(padding/3))+")")  
+    .attr("transform", "translate("+ (width/2) +","+(height-(padding/3))+")")
     .text("Age (months)");
+
+  // Extremity labels (Normal, Malnourished, and Severely Malnourished)
+  svg.append("text")
+    .attr("class","line-label")
+    .attr("transform", "translate("+ (width-padding) +","+(100)+")")
+    .text("Normal");
+
+  svg.append("text")
+    .attr("class","line-label")
+    .attr("transform", "translate("+ (width-padding) +","+(140)+")")
+    .text("Malnourished");
+
+  svg.append("text")
+    .attr("class","line-label")
+    .attr("transform", "translate("+ (width-padding) +","+(175)+")")
+    .text("Severely Malnourished");
 
   // function mouseoverDot(d, i) {
   //   // Update text
