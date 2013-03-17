@@ -13,6 +13,19 @@ Todos:
 // http://rveciana.github.com/geoexamples/d3js/d3js_electoral_map/tooltipCode.html#
 // http://rveciana.github.com/geoexamples/?page=d3js/d3js_electoral_map/simpleTooltipCode.html
 // http://bl.ocks.org/biovisualize/2973775
+
+Other Growth charts:
+https://wiki.openmrs.org/display/docs/Growth+Chart+Module
+http://www.cdc.gov/growthcharts/
+http://www.cdc.gov/growthcharts/2000growthchart-us.pdf
+  -> page 138, table 9 (weight vs age, birth to 36 months)
+  -> page 143, table 14 (weight vs age, 2 to 20 years)
+
+Online Calc
+http://www.medcalc.com/growth/
+
+UK
+http://www.rcpch.ac.uk/child-health/research-projects/uk-who-growth-charts/uk-who-growth-charts 
 */
 
 
@@ -21,50 +34,54 @@ function display_growth_chart(patient, el) {
 
   // Growth chart baselines
   // Based on Haiti child growth chart from age 0 to 5 years (60 months)
-  var normal = [
-    [0, 3.4],
-    [6, 8],
-    [12, 10.3],
-    [18, 11.5],
-    [24, 12.5],
-    [30, 13.7],
-    [36, 14.8],
-    [42, 15.7],
-    [48, 16.7],
-    [54, 17.8],
-    [60, 18.7]
-  ];
-  var malnourished = [
-    [0, 2.4],
-    [6, 5.5],
-    [12, 7.8],
-    [18, 8.7],
-    [24, 9.6],
-    [30, 10.5],
-    [36, 11.4],
-    [42, 12],
-    [48, 12.8],
-    [54, 13.5],
-    [60, 14.2]
-  ];
-  var severely_malnourished = [
-    [0, 2],
-    [6, 4.6],
-    [12, 6.5],
-    [18, 7.3],
-    [24, 8.1],
-    [30, 9],
-    [36, 9.8],
-    [42, 10.3],
-    [48, 10.9],
-    [54, 11.5],
-    [60, 12]
-  ];
 
-  var data = [
-  normal,
-  malnourished,
-  severely_malnourished];
+  // Needs meta data to lay out which lines should exist and what their names are
+  var haitiMeta = {
+    "lines": [{
+      "tag":"normal",
+      "name":"Normal"
+    }, {
+      "tag":"mal",
+      "name":"Malnourished"
+    }, {
+      "tag":"smal",
+      "name":"Severely Malnourished"
+    }]
+  };
+  var haitiData = [{"month":0,"normal":3.4,"mal":2.4,"smal":2},{"month":6,"normal":8,"mal":5.5,"smal":4.6},{"month":12,"normal":10.3,"mal":7.8,"smal":6.5},{"month":18,"normal":11.5,"mal":8.7,"smal":7.3},{"month":24,"normal":12.5,"mal":9.6,"smal":8.1},{"month":30,"normal":13.7,"mal":10.5,"smal":9},{"month":36,"normal":14.8,"mal":11.4,"smal":9.8},{"month":42,"normal":15.7,"mal":12,"smal":10.3},{"month":48,"normal":16.7,"mal":12.8,"smal":10.9},{"month":54,"normal":17.8,"mal":13.5,"smal":11.5},{"month":60,"normal":18.7,"mal":14.2,"smal":12}];
+
+  var haiti = {
+    "meta" : haitiMeta,
+    "data" : haitiData
+  };
+
+  // Create the lines, using meta data (to tag+name the lines, specify measurement type) and data (containing age vs measurement)
+  // combine into one json ...
+  // json = {"meta" : { ... }, "data" : variable_name_for_data };
+  function createLines(json) {
+    var meta = json.meta;
+    var data = json.data;
+
+    console.log("createLines()");
+    console.log(meta);
+    var newLines = [];
+
+    for (var i=0; i < meta.lines.length; i++) {
+      // Get the tag
+      var lineTag = meta.lines[i].tag;
+      console.log(lineTag);
+
+      newLines.push([]);
+      // Generate the list of data (month, weight)
+      for (var j=0; j < data.length; j++) {
+        newLines[i].push([data[j]["month"], data[j][lineTag]]);
+      }
+      console.log(newLines);
+    }
+    return newLines;
+  }
+
+  var data = createLines(haiti);
 
   // Boundaries for graph, based on growth chart bounds
   var yMax = 20; // weight, in kg
