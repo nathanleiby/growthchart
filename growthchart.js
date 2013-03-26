@@ -266,7 +266,7 @@ function display_growth_chart(patient, el, chartType, dims) {
     .append("circle")
     .attr("class", "dot")
   .call(dotHandler(function(d, i) {
-    return tooltipText(d);
+    return getTooltipText(d);
   }))
   // .on("mouseout", mouseoutDot)
   .attr("cx", function(d, i) {
@@ -332,10 +332,26 @@ function display_growth_chart(patient, el, chartType, dims) {
       .text(metaData.lines[i].name);
   }
 
-  var tooltipEl = svg.append("text")
+  var tooltipOffset = padding + 10;
+  var tooltipGroup = svg.append("g");
+
+  var tooltipBackground = tooltipGroup.append("rect")
     // .attr("class","tooltip")
-    .attr("x", padding + 10)
-    .attr("y", padding + 10)
+    .attr("x", tooltipOffset)
+    .attr("y", tooltipOffset)
+    .attr("width", 0)
+    .attr("height", 0)
+    .attr("class","tooltipTextBackground")
+    // .style("font-size","14px")
+    // .style("background-color","gray")
+    // .text("(Move mouse over a data point to see details)");
+    // .text("");
+
+  var tooltipText = tooltipGroup.append("text")
+    // .attr("class","tooltip")
+    .attr("x", tooltipOffset)
+    .attr("y", tooltipOffset)
+    .attr("class","tooltipText")
     .style("font-size","14px")
     // .style("background-color","gray")
     // .text("(Move mouse over a data point to see details)");
@@ -411,9 +427,23 @@ function display_growth_chart(patient, el, chartType, dims) {
         d3.selectAll("circle.dotSelected").attr("class", "dot");
         d3.select(this).attr("class", "dotSelected");
 
-        // Add text using the accessor function
-        var tooltipText = accessor(d, i) || '';
-        tooltipEl.text(tooltipText);
+        // Update text using the accessor function
+        var ttAccessor = accessor(d, i) || '';
+        tooltipText.text(ttAccessor);
+
+        // Update text background
+        var dottedSegmentLength = 3;  // used below, too, for linesToAxis
+        var tooltipHeightPadding = 5;
+        var tooltipWidthPadding = 4;
+        var bbox = svg.select(".tooltipText")[0][0].getBBox();
+        svg.selectAll(".tooltipTextBackground")
+          .attr("width", bbox.width + tooltipWidthPadding * 2)
+          .attr("height", bbox.height + tooltipHeightPadding )
+          .attr("y", tooltipOffset - bbox.height )
+          .attr("x", tooltipOffset - tooltipWidthPadding );
+          // .style("stroke-dasharray",
+          //   dottedSegmentLength.toString()
+          // );
 
         // create a rectangle that stretches to the axes, so it's easy to see if the axis is right..
         // Remove old
@@ -428,11 +458,11 @@ function display_growth_chart(patient, el, chartType, dims) {
         halfRect = halfRectLength.toString();
 
         // Draw top and right sides of rectangle as dotted. Hide bottom and left sides
-        var dottedSegmentLength = 3;
         var dottedSegments = Math.floor(halfRectLength / dottedSegmentLength);
         var nonDottedLength = halfRectLength*2; // + (dottedSegments % dottedSegmentLength);
 
         var dashArrayStroke = [];
+
         for (var i=0; i < dottedSegments; i++) {
           dashArrayStroke.push(dottedSegmentLength);
         }
@@ -462,7 +492,7 @@ function display_growth_chart(patient, el, chartType, dims) {
     };
   }
 
-  function tooltipText(d) {
+  function getTooltipText(d) {
     var age_in_months = parseFloat(d[0]);
     var weight_in_kg = parseFloat(d[1]).toFixed(1);
     var textAge = 'Age: ' + getAgeText(age_in_months);
