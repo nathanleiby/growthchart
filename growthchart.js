@@ -36,32 +36,13 @@ http://www.rcpch.ac.uk/child-health/research-projects/uk-who-growth-charts/uk-wh
 // 2) change the background lines (# of lines, # of points)
 // 3) change the labels (normal, mal, sev mal)
 
-function display_growth_chart(patient, el) {
+// How to dynamically add data to a chart.. update the line point by point
+// http://jsfiddle.net/mbeasley183/DbXhL/
 
-  // Growth chart baselines
-  // Based on Haiti child growth chart from age 0 to 5 years (60 months)
 
-  // Needs meta data to lay out which lines should exist and what their names are
-  var haitiMeta = {
-    "lines": [{
-      "tag":"normal",
-      "name":"Normal"
-    }, {
-      "tag":"mal",
-      "name":"Malnourished"
-    }, {
-      "tag":"smal",
-      "name":"Severely Malnourished"
-    }]
-  };
-  var haitiData = [{"Month":0,"normal":3.4,"mal":2.4,"smal":2},{"Month":6,"normal":8,"mal":5.5,"smal":4.6},{"Month":12,"normal":10.3,"mal":7.8,"smal":6.5},{"Month":18,"normal":11.5,"mal":8.7,"smal":7.3},{"Month":24,"normal":12.5,"mal":9.6,"smal":8.1},{"Month":30,"normal":13.7,"mal":10.5,"smal":9},{"Month":36,"normal":14.8,"mal":11.4,"smal":9.8},{"Month":42,"normal":15.7,"mal":12,"smal":10.3},{"Month":48,"normal":16.7,"mal":12.8,"smal":10.9},{"Month":54,"normal":17.8,"mal":13.5,"smal":11.5},{"Month":60,"normal":18.7,"mal":14.2,"smal":12}];
+function display_growth_chart(patient, el, chartType) {
 
-  var haiti = {
-    "meta" : haitiMeta,
-    "data" : haitiData
-  };
-
-  // Create the lines
+  // Create the background lines
   //
   // json includes "meta" (to tag+name the lines, specify measurement type)
   //  and "data" (containing age in months vs measurement)
@@ -89,13 +70,30 @@ function display_growth_chart(patient, el) {
     return newLines;
   }
 
-  // var data = createLines(haiti);
-  // var data = createLines(wfa_0_to_5);
-  var data = createLines(wfa_boys_2_20);
+  // Get data to build chart's 'background lines' depending on chartType
+  var data;
+  var chartTypes = ['haiti', '0_to_5', '2_to_20' ];
+  switch(chartType) {
+    case 'haiti':
+      var dataHaiti = createLines(haiti);
+      data = dataHaiti;
+      break;
+    case '0_to_5':
+      var data_0_to_5 = createLines(wfa_0_to_5);
+      data = data_0_to_5;
+      break;
+    case '2_to_20':
+      var data_2_to_20 = createLines(wfa_boys_2_20);
+      data = data_2_to_20;
+      break;
+    default:
+      console.log('error choosing chart type');
+      console.log('valid options are: ', chartTypes);
+      return;
+  }
 
   // Save the last tuple so that I can label it
   lastTuples = [];
-  global_lt = lastTuples; // TODO: remove
 
   // Boundaries for graph, based on growth chart bounds
   var yMax = 0; // weight, in kg
@@ -140,9 +138,13 @@ function display_growth_chart(patient, el) {
     .y1(line.y())
     .y0(yScale(0));
 
+  // clear exiting growth chart svg .. allows to reset graph with new background
+  d3.select(el).select(".growth_chart_main_svg").remove();
+
   var svg = d3.select(el).append("svg")
     .attr("width", width*2)
-    .attr("height", height);
+    .attr("height", height)
+    .attr("class", "growth_chart_main_svg");
 
   // Baseline growth curves
   var lines = svg.selectAll("g")
@@ -157,11 +159,6 @@ function display_growth_chart(patient, el) {
     .attr("class", "line")
     .attr("d", line);
 
-  // svg.append("text")
-  //   .attr("text-anchor", "middle")
-  //   .attr("transform", "translate("+ (width/2) +","+(height-(padding/3))+")")
-  //   .text("Age (months)");
-
   // Patient's data
 
   // Add line for the patient's growth
@@ -174,14 +171,12 @@ function display_growth_chart(patient, el) {
     .attr("d", line);
 
   // Dots at each data point
-  var dots = svg.selectAll("dot")
+  var dots = svg.selectAll(".dot")
     .data(patient)
     .enter()
     .append("circle")
     .attr("class", "dot")
-  // .on("mouseover", mouseoverDot)
   .call(dotHandler(function(d, i) {
-    // console.log('helper', el);
     return tooltipText(d);
   }))
   // .on("mouseout", mouseoutDot)
@@ -191,18 +186,12 @@ function display_growth_chart(patient, el) {
     .attr("cy", function(d, i) {
     return yScale(d[1]);
   })
-  //   .attr("r", function(d) {
-  //   return 1;
-  // })
-    .attr("r", 4);
+    .attr("r", 3);
 
   // Add axes
 
   // x-axis
   var xAxis = d3.svg.axis();
-  // xAxis.scale(d3.scale.linear()
-  //   .domain([0, xMax])
-  //   .range([0, width - padding*2]));
   xAxis.scale(xScale);
   xAxis.orient("bottom")
     .ticks(10);
@@ -214,9 +203,6 @@ function display_growth_chart(patient, el) {
 
   // y-axis
   var yAxis = d3.svg.axis();
-  // yAxis.scale(d3.scale.linear()
-  //   .domain([0, yMax])
-  //   .range([height-padding, 0]));
   yAxis.scale(yScale);
   yAxis.orient("left")
     .ticks(10);
@@ -245,13 +231,12 @@ function display_growth_chart(patient, el) {
   // Extremity labels (Normal, Malnourished, and Severely Malnourished)
   // TODO: Get endpoint of line from xscale
 
-  xOffset = xScale(lastTuples[0][0]);
-  yOffset = yScale(lastTuples[0][1]);
-  svg.append("text")
-    .attr("class","line-label")
-    .attr("transform", "translate("+ (width-padding+5) +","+(100)+")")
-    .text("Normal");
-
+  // xOffset = xScale(lastTuples[0][0]);
+  // yOffset = yScale(lastTuples[0][1]);
+  // svg.append("text")
+  //   .attr("class","line-label")
+  //   .attr("transform", "translate("+ xOffset +","+ yOffset +")")
+  //   .text("Normal");
 
   svg.append("text")
     .attr("class","line-label")
@@ -272,7 +257,40 @@ function display_growth_chart(patient, el) {
     // .attr("class","tooltip")
     .attr("transform", "translate("+ (padding*2) +","+(padding)+")")
     .style("font-size","14px")
-    .text("");
+    // .style("background-color","gray")
+    .text("(Move mouse over a data point to see details)");
+
+  // Button to toggle chart type
+  //
+  var rectButton = svg.append("rect")
+    .attr("rx", 6)
+    .attr("ry", 6)
+    .attr("x", padding*10-3)
+    .attr("y", padding-14-3)
+    .attr("width", 101)  // 106
+    .attr("height", 25)
+    .style("stroke","gray")
+    .style("fill", d3.scale.category20c())
+    .on("click", function() {
+      changeGraphType();
+    });
+
+  var rectButtonText = svg.append("text")
+    .attr("transform", "translate("+ (padding*10) +","+(padding)+")")
+    .style("font-size","14px")
+    .style("fill","white")
+    .text("Change Graph")
+    .on("click", function() {
+      changeGraphType();
+    });
+
+  function changeGraphType() {
+    var whichChart = chartTypes.indexOf(chartType);
+    whichChart += 1;
+    whichChart %= chartTypes.length;
+
+    var growthChart = display_growth_chart(patient, el , chartTypes[whichChart]);
+  }
 
   function dotHandler(accessor) {
     return function(selection) {
@@ -312,7 +330,12 @@ function display_growth_chart(patient, el) {
       return m + 'm';
     }
   }
+
+  // callable methods
+  return this;
 }
+
+//////// DATA //////////
 
 var wfa_0_to_5_meta = {
     "lines": [{
@@ -3969,4 +3992,26 @@ var wfa_boys_2_20_zscores_data = [
 var wfa_boys_2_20 = {
   "meta" : wfa_0_to_5_meta,
   "data" : wfa_boys_2_20_zscores_data
+};
+
+// Growth chart baselines
+// Based on Haiti child growth chart from age 0 to 5 years (60 months)  // Needs meta data to lay out which lines should exist and what their names are
+var haitiMeta = {
+  "lines": [{
+    "tag":"normal",
+    "name":"Normal"
+  }, {
+    "tag":"mal",
+    "name":"Malnourished"
+  }, {
+    "tag":"smal",
+    "name":"Severely Malnourished"
+  }]
+};
+
+var haitiData = [{"Month":0,"normal":3.4,"mal":2.4,"smal":2},{"Month":6,"normal":8,"mal":5.5,"smal":4.6},{"Month":12,"normal":10.3,"mal":7.8,"smal":6.5},{"Month":18,"normal":11.5,"mal":8.7,"smal":7.3},{"Month":24,"normal":12.5,"mal":9.6,"smal":8.1},{"Month":30,"normal":13.7,"mal":10.5,"smal":9},{"Month":36,"normal":14.8,"mal":11.4,"smal":9.8},{"Month":42,"normal":15.7,"mal":12,"smal":10.3},{"Month":48,"normal":16.7,"mal":12.8,"smal":10.9},{"Month":54,"normal":17.8,"mal":13.5,"smal":11.5},{"Month":60,"normal":18.7,"mal":14.2,"smal":12}];
+
+var haiti = {
+  "meta" : haitiMeta,
+  "data" : haitiData
 };
