@@ -5,7 +5,7 @@ A visual tool used by doctors to monitor a child's nutrition and health.
 
 Demo:
 
-[nathanleiby.github.com/growthchart](nathanleiby.github.com/growthchart)
+[Demo](http://nathanleiby.github.com/growthchart/)
 
 Screenshot:
 
