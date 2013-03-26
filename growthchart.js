@@ -1,45 +1,3 @@
-/*
-Ideas:
--Take a simply formatted JSON of expected growths, to plot x against y
--Work for weight vs age, height vs age, height vs weight, etc etc
--Work against various standards (CDC, WHO, national goverments)
-
-Todos:
--Default is to select the last datum; highlight it and show tooltip
--Improved tickmarks
--Labels on the lines, or a legend (%tile, malnourished/severely/normal); color for different lines
--Support for ages 5 years to 20 years
--Improve tooltip style
-// http://rveciana.github.com/geoexamples/d3js/d3js_electoral_map/tooltipCode.html#
-// http://rveciana.github.com/geoexamples/?page=d3js/d3js_electoral_map/simpleTooltipCode.html
-// http://bl.ocks.org/biovisualize/2973775
-
-Other Growth charts:
-https://wiki.openmrs.org/display/docs/Growth+Chart+Module
-http://www.cdc.gov/growthcharts/
-http://www.cdc.gov/growthcharts/2000growthchart-us.pdf
-  -> page 138, table 9 (weight vs age, birth to 36 months)
-  -> page 143, table 14 (weight vs age, 2 to 20 years)
-
-Online Calc
-http://www.medcalc.com/growth/
-
-UK
-http://www.rcpch.ac.uk/child-health/research-projects/uk-who-growth-charts/uk-who-growth-charts
-*/
-
-
-// TODO: Turn this into a nice class with accessible methods
-
-// just update no animation
-// 1) change the axes
-// 2) change the background lines (# of lines, # of points)
-// 3) change the labels (normal, mal, sev mal)
-
-// How to dynamically add data to a chart.. update the line point by point
-// http://jsfiddle.net/mbeasley183/DbXhL/
-
-
 function display_growth_chart(patient, el, chartType) {
 
   // Create the background lines
@@ -72,25 +30,31 @@ function display_growth_chart(patient, el, chartType) {
 
   // Get data to build chart's 'background lines' depending on chartType
   var data;
+  var metaData;
   var chartTypes = ['haiti', '0_to_5', '2_to_20' ];
   switch(chartType) {
     case 'haiti':
       var dataHaiti = createLines(haiti);
       data = dataHaiti;
+      metaData = haiti.meta;
       break;
     case '0_to_5':
       var data_0_to_5 = createLines(wfa_0_to_5);
       data = data_0_to_5;
+      metaData = wfa_0_to_5.meta;
       break;
     case '2_to_20':
       var data_2_to_20 = createLines(wfa_boys_2_20);
       data = data_2_to_20;
+      metaData = wfa_boys_2_20.meta;
       break;
     default:
       console.log('error choosing chart type');
       console.log('valid options are: ', chartTypes);
       return;
   }
+
+  console.log('meta', metaData);
 
   // Save the last tuple so that I can label it
   lastTuples = [];
@@ -228,30 +192,18 @@ function display_growth_chart(patient, el, chartType) {
     .attr("transform", "translate("+ (width/2) +","+(height-(padding/3))+")")
     .text("Age (months)");
 
-  // Extremity labels (Normal, Malnourished, and Severely Malnourished)
-  // TODO: Get endpoint of line from xscale
+  // Line labels (Normal, Malnourished, and Severely Malnourished)
+  for (var i=0; i<metaData.lines.length; i++) {
+    xOffset = xScale(lastTuples[i][0]);
+    xOffset += 2; // a little space better graph and text
+    yOffset = yScale(lastTuples[i][1]);
+    yOffset += 4; // center text on line
 
-  // xOffset = xScale(lastTuples[0][0]);
-  // yOffset = yScale(lastTuples[0][1]);
-  // svg.append("text")
-  //   .attr("class","line-label")
-  //   .attr("transform", "translate("+ xOffset +","+ yOffset +")")
-  //   .text("Normal");
-
-  svg.append("text")
-    .attr("class","line-label")
-    .attr("transform", "translate("+ (width-padding+5) +","+(100)+")")
-    .text("Normal");
-
-  svg.append("text")
-    .attr("class","line-label")
-    .attr("transform", "translate("+ (width-padding+5) +","+(140)+")")
-    .text("Malnourished");
-
-  svg.append("text")
-    .attr("class","line-label")
-    .attr("transform", "translate("+ (width-padding+5) +","+(175)+")")
-    .text("Severely Malnourished");
+    svg.append("text")
+      .attr("class","line-label")
+      .attr("transform", "translate("+ xOffset +","+ yOffset +")")
+      .text(metaData.lines[i].name);
+  }
 
   var tooltipEl = svg.append("text")
     // .attr("class","tooltip")
@@ -340,29 +292,28 @@ function display_growth_chart(patient, el, chartType) {
 var wfa_0_to_5_meta = {
     "lines": [{
       "tag":"SD0",
-      "name":"50th %-tile"
+      "name":"50th percentile"
     }, {
       "tag":"SD1neg",
-      "name":"?"
+      "name":"-1 SD"
     }, {
       "tag":"SD2neg",
-      "name":"?"
+      "name":"-2 SD"
     // }, {
     //   "tag":"SD3neg",
-    //   "name":"?"
+    //   "name":"-3 SD"
     // }, {
     //   "tag":"SD3",
-    //   "name":"?"
+    //   "name":"+3 SD"
     }, {
       "tag":"SD2",
-      "name":"?"
+      "name":"+2 SD"
     }, {
       "tag":"SD1",
-      "name":"?"
+      "name":"+1 SD"
     }]
 };
 
-// TODO: Boys? Girls?
 var wfa_0_to_5_data = [{
     "Month":"0",
     "L":"0.3487",
