@@ -38,6 +38,12 @@ body {
   stroke-width: 1.5px;
 }
 
+.rect-to-axis {
+  /*fill: rgba(0,0,0,.05);*/
+  fill: rgba(0,0,0,0);
+  stroke: rgba(20,20,20, .8);
+}
+
 .axis path,
 .axis line {
     fill: none;
@@ -51,17 +57,17 @@ text {
 }
 
 /* http://bl.ocks.org/biovisualize/2973775 */
-.tooltip{ 
+.tooltip{
   background-color:rgb(237,126,30);
   background-color:rgba(237,126,30,0.5);
-  
+
   /*padding-left: 10px;*/
   /*text-align: center;*/
-  
+
   margin: 10px;
   height: 32px;
   width: 100px;
-  
+
   padding-top: 10px;
   -webkit-border-radius:10px;
   -moz-border-radius:10px;

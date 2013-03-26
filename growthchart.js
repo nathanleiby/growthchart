@@ -111,7 +111,7 @@ function display_growth_chart(patient, el, chartType) {
     .attr("class", "growth_chart_main_svg");
 
   // Baseline growth curves
-  var lines = svg.selectAll("g")
+  var lines = svg.selectAll(".lines")
     .data(data)
     .enter();
 
@@ -122,6 +122,8 @@ function display_growth_chart(patient, el, chartType) {
   lines.append("path")
     .attr("class", "line")
     .attr("d", line);
+
+  var linesToAxis = svg.append("g");
 
   // Patient's data
 
@@ -153,6 +155,7 @@ function display_growth_chart(patient, el, chartType) {
     .attr("r", 3);
 
   // Add axes
+  // TODO: Improve axes to have years and months, like http://www.who.int/childgrowth/standards/cht_wfa_boys_p_0_5.pdf
 
   // x-axis
   var xAxis = d3.svg.axis();
@@ -176,10 +179,10 @@ function display_growth_chart(patient, el, chartType) {
     .attr("transform", "translate(" + padding + ",0)")
     .call(yAxis);
 
-  svg.selectAll(".xaxis text")  // select all the text elements for the xaxis
-          .attr("transform", function(d) {
-             return "translate(" + this.getBBox().height*-2 + "," + this.getBBox().height + ")rotate(-45)";
-         });
+  // svg.selectAll(".xaxis text")  // select all the text elements for the xaxis
+  //         .attr("transform", function(d) {
+  //            return "translate(" + this.getBBox().height*-2 + "," + this.getBBox().height + ")rotate(-45)";
+  //        });
 
   // Axes text
   svg.append("text")
@@ -254,6 +257,47 @@ function display_growth_chart(patient, el, chartType) {
         // Add text using the accessor function
         var tooltipText = accessor(d, i) || '';
         tooltipEl.text(tooltipText);
+
+        // create a rectangle that stretches to the axes, so it's easy to see if the axis is right..
+        // Remove old
+        linesToAxis.selectAll(".rect-to-axis")
+          .data([])
+        .exit().remove();
+
+        // Add new
+        var linesToAxisWidth = xScale(d[0]) - padding;
+        var linesToAxisHeight = height - yScale(d[1]) - padding;
+        var halfRectLength = linesToAxisWidth + linesToAxisHeight;
+        halfRect = halfRectLength.toString();
+
+        // Draw top and right sides of rectangle as dotted. Hide bottom and left sides
+        var dottedSegmentLength = 3;
+        var dottedSegments = Math.floor(halfRectLength / dottedSegmentLength);
+        var nonDottedLength = halfRectLength + (dottedSegments % dottedSegmentLength);
+
+        var dashArrayStroke = [];
+        for (var i=0; i < dottedSegments; i++) {
+          dashArrayStroke.push(dottedSegmentLength);
+        }
+        // if even number, add extra filler segment to make sure 2nd half of rectangle is hidden
+        if ( (dottedSegments % 2) === 0) {
+          dashArrayStroke.push(1);
+        }
+
+        dashArrayStroke.push(nonDottedLength);
+
+        linesToAxis.selectAll(".rect-to-axis")
+          .data([d])
+         .enter().append("rect")
+          .attr("class", "rect-to-axis")
+          .style("stroke-dasharray",
+            dashArrayStroke.toString()
+          )
+          .attr("x", padding)
+          .attr("y", yScale(d[1]))
+          .attr("width", linesToAxisWidth)
+          .attr("height", linesToAxisHeight);
+
       });
     };
   }
@@ -289,30 +333,43 @@ function display_growth_chart(patient, el, chartType) {
 
 //////// DATA //////////
 
-var wfa_0_to_5_meta = {
+var wfa_boys_2_20_meta = {
     "lines": [{
       "tag":"SD0",
-      "name":"50th percentile"
+      "name":"50th",
+      // "class":"SD0"  // TODO: Add color based on line class, e.g.
+      // http://www.who.int/childgrowth/standards/cht_wfa_boys_p_0_5.pdf
     }, {
       "tag":"SD1neg",
-      "name":"-1 SD"
+      "name":"15th"
     }, {
       "tag":"SD2neg",
-      "name":"-2 SD"
-    // }, {
-    //   "tag":"SD3neg",
-    //   "name":"-3 SD"
-    // }, {
-    //   "tag":"SD3",
-    //   "name":"+3 SD"
+      "name":"2nd"
     }, {
       "tag":"SD2",
-      "name":"+2 SD"
+      "name":"98th"
     }, {
       "tag":"SD1",
-      "name":"+1 SD"
+      "name":"85th"
     }]
 };
+
+// Copy the array, since it's an object reference
+var wfa_0_to_5_meta = {};
+wfa_0_to_5_meta.lines = wfa_boys_2_20_meta.lines.slice(0);
+
+wfa_0_to_5_meta.lines.push(
+  {
+    "tag":"SD3neg",
+    "name":"0.1th"
+  }
+);
+wfa_0_to_5_meta.lines.push(
+  {
+    "tag":"SD3",
+    "name":"99.9th"
+  }
+);
 
 var wfa_0_to_5_data = [{
     "Month":"0",
@@ -3941,7 +3998,7 @@ var wfa_boys_2_20_zscores_data = [
 // var wfa_boys_2_20_zscores_meta =
 
 var wfa_boys_2_20 = {
-  "meta" : wfa_0_to_5_meta,
+  "meta" : wfa_boys_2_20_meta,
   "data" : wfa_boys_2_20_zscores_data
 };
 
