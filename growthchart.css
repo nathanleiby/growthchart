@@ -44,6 +44,12 @@ body {
   stroke: rgba(20,20,20, .8);
 }
 
+.backgroundRect {
+  /*fill: rgba(0,0,0,.05);*/
+  fill: rgba(0,0,0,0);
+  stroke: rgba(20,20,20, .8);
+}
+
 .axis path,
 .axis line {
     fill: none;
