@@ -134,7 +134,7 @@ function display_growth_chart(patient, el, chartType) {
     .enter();
   linesP.append("path")
     .attr("class", "pLine")
-    .attr("d", line);
+    .attr("d", line.interpolate("")); // interpolate("") removes the smoothing
 
   // Dots at each data point
   var dots = svg.selectAll(".dot")
@@ -273,7 +273,7 @@ function display_growth_chart(patient, el, chartType) {
         // Draw top and right sides of rectangle as dotted. Hide bottom and left sides
         var dottedSegmentLength = 3;
         var dottedSegments = Math.floor(halfRectLength / dottedSegmentLength);
-        var nonDottedLength = halfRectLength + (dottedSegments % dottedSegmentLength);
+        var nonDottedLength = halfRectLength*2; // + (dottedSegments % dottedSegmentLength);
 
         var dashArrayStroke = [];
         for (var i=0; i < dottedSegments; i++) {
@@ -281,10 +281,15 @@ function display_growth_chart(patient, el, chartType) {
         }
         // if even number, add extra filler segment to make sure 2nd half of rectangle is hidden
         if ( (dottedSegments % 2) === 0) {
-          dashArrayStroke.push(1);
+          extraSegmentLength = halfRectLength - (dottedSegments*dottedSegmentLength);
+          dashArrayStroke.push(extraSegmentLength);
+          dashArrayStroke.push(nonDottedLength);
+        } else {
+          // extraSegmentLength = halfRectLength - (dottedSegments*dottedSegmentLength);
+          dashArrayStroke.push(nonDottedLength);
         }
 
-        dashArrayStroke.push(nonDottedLength);
+
 
         linesToAxis.selectAll(".rect-to-axis")
           .data([d])
