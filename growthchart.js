@@ -164,11 +164,18 @@ function display_growth_chart(patient, el, chartType, dims) {
     'wfa_girls_2_to_20' : wfa_girls_2_to_20
   };
 
+  var chartTypeKeys = [];
+  for (k in chartTypes) {
+    if (chartTypes.hasOwnProperty(k)) {
+      chartTypeKeys.push(k);
+    }
+  }
+
   if (chartTypes.hasOwnProperty(chartType)) {
     data = createLines(chartTypes[chartType]);
     metaData = chartTypes[chartType].meta;
   } else {
-    console.log('Error choosing chart type. Valid options are: ', chartTypes);
+    console.log('Error choosing chart type. Your input was "' + chartType + '". Valid options are:', chartTypeKeys);
     return;
   }
 
@@ -406,18 +413,11 @@ function display_growth_chart(patient, el, chartType, dims) {
         .text(metaData.title);
 
   function changeGraphType() {
-    var keys = [];
-    for (k in chartTypes) {
-      if (chartTypes.hasOwnProperty(k)) {
-        keys.push(k);
-      }
-    }
-
-    var whichChart = keys.indexOf(chartType);
+    var whichChart = chartTypeKeys.indexOf(chartType);
     whichChart += 1;
-    whichChart %= keys.length;
+    whichChart %= chartTypeKeys.length;
 
-    var growthChart = display_growth_chart(patient, el , keys[whichChart]);
+    var growthChart = display_growth_chart(patient, el , chartTypeKeys[whichChart]);
   }
 
   function dotHandler(accessor) {
