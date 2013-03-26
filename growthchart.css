@@ -62,20 +62,7 @@ text {
     font-size: 11px;
 }
 
-/* http://bl.ocks.org/biovisualize/2973775 */
-.tooltip{
-  background-color:rgb(237,126,30);
-  background-color:rgba(237,126,30,0.5);
-
-  /*padding-left: 10px;*/
-  /*text-align: center;*/
-
-  margin: 10px;
-  height: 32px;
-  width: 100px;
-
-  padding-top: 10px;
-  -webkit-border-radius:10px;
-  -moz-border-radius:10px;
-  border-radius:10px;
+.tooltipTextBackground {
+  fill:rgba(237,126,30,0.5);
+  /*stroke: rgba(20,20,20, .8);*/
 }
