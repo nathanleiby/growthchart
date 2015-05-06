@@ -26,6 +26,10 @@ body {
   opacity: 0.2;
 }
 
+.areaGirl {
+    fill: lightpink;
+    opacity: 0.2;
+}
 
 .dot {
   fill: black;

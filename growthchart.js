@@ -436,9 +436,18 @@ function display_growth_chart(patient, el, chartType, dims) {
     .data(data)
     .enter();
 
-  lines.append("path")
+  if (chartType == "wfa_girls_0_to_5" || chartType == "lfa_girls_0_to_5" || chartType == "hcfa_girls_0_to_5")
+  {
+      lines.append("path")
+    .attr("class", "areaGirl")
+    .attr("d", area);
+  }
+  else
+  {
+      lines.append("path")
     .attr("class", "area")
     .attr("d", area);
+  }
 
   lines.append("path")
     .attr("class", "line")
