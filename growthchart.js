@@ -46,6 +46,159 @@ var wfa_all_0_to_5_meta = {
     }]
 };
 
+var hcfa_boys_0_to_5_meta = {
+    "title": "Head Circumference vs Age, Boys (WHO)",
+    "lines": [{
+        "tag": "SD0",
+        "name": "50th"
+    }, {
+        "tag": "SD1neg",
+        "name": "15th"
+    }, {
+        "tag": "SD2neg",
+        "name": "2nd"
+    }, {
+        "tag": "SD2",
+        "name": "98th"
+    }, {
+        "tag": "SD1",
+        "name": "85th"
+    }, {
+        "tag": "SD3",
+        "name": "99.9th"
+    }, {
+        "tag": "SD3neg",
+        "name": "0.1th"
+    }]
+};
+
+var hcfa_girls_0_to_5_meta = {
+    "title": "Head Circumference vs Age, Girls (WHO)",
+    "lines": [{
+        "tag": "SD0",
+        "name": "50th"
+    }, {
+        "tag": "SD1neg",
+        "name": "15th"
+    }, {
+        "tag": "SD2neg",
+        "name": "2nd"
+    }, {
+        "tag": "SD2",
+        "name": "98th"
+    }, {
+        "tag": "SD1",
+        "name": "85th"
+    }, {
+        "tag": "SD3",
+        "name": "99.9th"
+    }, {
+        "tag": "SD3neg",
+        "name": "0.1th"
+    }]
+};
+                               
+var hcfa_boys_0_to_5_values = [{ "Month": "0", "SD0": "34.5", "SD1": "35.7", "SD2": "37.0", "SD3": "38.3", "SD1neg": "33.2", "SD2neg": "31.9", "SD3neg": "30.7" },
+                                { "Month": "6", "SD0": "43.3", "SD1": "44.6", "SD2": "45.8", "SD3": "47.0", "SD1neg": "42.1", "SD2neg": "40.9", "SD3neg": "39.7" },
+                                { "Month": "12", "SD0": "46.1", "SD1": "47.4", "SD2": "48.6", "SD3": "49.9", "SD1neg": "44.8", "SD2neg": "43.5", "SD3neg": "42.2" },
+                                { "Month": "18", "SD0": "47.4", "SD1": "48.7", "SD2": "50", "SD3": "51.4", "SD1neg": "46", "SD2neg": "44.7", "SD3neg": "43.4" },
+                                { "Month": "24", "SD0": "48.3", "SD1": "49.6", "SD2": "51", "SD3": "52.3", "SD1neg": "46.9", "SD2neg": "45.5", "SD3neg": "44.2" },
+                                { "Month": "30", "SD0": "48.9", "SD1": "50.3", "SD2": "51.7", "SD3": "53.1", "SD1neg": "47.5", "SD2neg": "46.1", "SD3neg": "44.8" },
+                                { "Month": "36", "SD0": "49.5", "SD1": "50.9", "SD2": "52.3", "SD3": "53.7", "SD1neg": "48", "SD2neg": "46.6", "SD3neg": "45.2" },
+                                { "Month": "42", "SD0": "49.9", "SD1": "51.3", "SD2": "52.8", "SD3": "54.2", "SD1neg": "48.4", "SD2neg": "47", "SD3neg": "45.5" },
+                                { "Month": "48", "SD0": "50.2", "SD1": "51.7", "SD2": "53.1", "SD3": "54.6", "SD1neg": "48.7", "SD2neg": "47.3", "SD3neg": "45.8" },
+                                { "Month": "54", "SD0": "50.5", "SD1": "52", "SD2": "53.5", "SD3": "54.9", "SD1neg": "49", "SD2neg": "47.5", "SD3neg": "46.1" },
+                                { "Month": "60", "SD0": "50.7", "SD1": "52.2", "SD2": "53.7", "SD3": "55.2", "SD1neg": "49.2", "SD2neg": "47.7", "SD3neg": "46.3" }];
+
+var hcfa_girls_0_to_5_values = [{ "Month": "0", "SD0": "33.9", "SD1": "35.1", "SD2": "36.3", "SD3": "37.4", "SD1neg": "32.7", "SD2neg": "31.5", "SD3neg": "30.3" },
+                                { "Month": "6", "SD0": "42.2", "SD1": "43.5", "SD2": "44.8", "SD3": "46.1", "SD1neg": "40.9", "SD2neg": "39.6", "SD3neg": "38.3" },
+                                { "Month": "12", "SD0": "44.9", "SD1": "46.3", "SD2": "47.6", "SD3": "49.0", "SD1neg": "43.5", "SD2neg": "42.2", "SD3neg": "40.8" },
+                                { "Month": "18", "SD0": "46.2", "SD1": "47.6", "SD2": "49", "SD3": "50.4", "SD1neg": "44.9", "SD2neg": "43.5", "SD3neg": "42.1" },
+                                { "Month": "24", "SD0": "47.2", "SD1": "48.6", "SD2": "50", "SD3": "51.4", "SD1neg": "45.8", "SD2neg": "44.4", "SD3neg": "43" },
+                                { "Month": "30", "SD0": "47.9", "SD1": "49.3", "SD2": "50.7", "SD3": "52.2", "SD1neg": "46.5", "SD2neg": "45.1", "SD3neg": "43.7" },
+                                { "Month": "36", "SD0": "48.5", "SD1": "49.9", "SD2": "51.3", "SD3": "52.7", "SD1neg": "47.1", "SD2neg": "45.7", "SD3neg": "44.3" },
+                                { "Month": "42", "SD0": "49", "SD1": "50.4", "SD2": "51.8", "SD3": "53.2", "SD1neg": "47.5", "SD2neg": "46.1", "SD3neg": "44.7" },
+                                { "Month": "48", "SD0": "49.3", "SD1": "50.8", "SD2": "52.2", "SD3": "53.6", "SD1neg": "47.9", "SD2neg": "46.5", "SD3neg": "45.1" },
+                                { "Month": "54", "SD0": "49.6", "SD1": "51.1", "SD2": "52.5", "SD3": "53.9", "SD1neg": "48.2", "SD2neg": "46.8", "SD3neg": "45.4" },
+                                { "Month": "60", "SD0": "49.9", "SD1": "51.3", "SD2": "52.8", "SD3": "54.2", "SD1neg": "48.5", "SD2neg": "47.1", "SD3neg": "45.7" }];
+
+var lfa_boys_0_to_5_meta = {
+    "title": "Length vs Age, Boys (WHO)",
+    "lines": [{
+        "tag": "SD0",
+        "name": "50th"
+    }, {
+        "tag": "SD1neg",
+        "name": "15th"
+    }, {
+        "tag": "SD2neg",
+        "name": "2nd"
+    }, {
+        "tag": "SD2",
+        "name": "98th"
+    }, {
+        "tag": "SD1",
+        "name": "85th"
+    }, {
+        "tag": "SD3",
+        "name": "99.9th"
+    }, {
+        "tag": "SD3neg",
+        "name": "0.1th"
+    }]
+};
+
+var lfa_girls_0_to_5_meta = {
+    "title": "Length vs Age, Girls (WHO)",
+    "lines": [{
+        "tag": "SD0",
+        "name": "50th"
+    }, {
+        "tag": "SD1neg",
+        "name": "15th"
+    }, {
+        "tag": "SD2neg",
+        "name": "2nd"
+    }, {
+        "tag": "SD2",
+        "name": "98th"
+    }, {
+        "tag": "SD1",
+        "name": "85th"
+    }, {
+        "tag": "SD3",
+        "name": "99.9th"
+    }, {
+        "tag": "SD3neg",
+        "name": "0.1th"
+    }]
+};
+
+var lfa_boys_0_to_5_values = [{ "Month": "0", "SD0": "49.9", "SD1": "51.8", "SD2": "53.7", "SD3": "55.6", "SD1neg": "48.0", "SD2neg": "46.1", "SD3neg": "44.2" },
+                                { "Month": "6", "SD0": "67.6", "SD1": "69.8", "SD2": "71.9", "SD3": "74.0", "SD1neg": "65.5", "SD2neg": "63.3", "SD3neg": "61.2" },
+                                { "Month": "12", "SD0": "75.7", "SD1": "78.1", "SD2": "80.5", "SD3": "82.9", "SD1neg": "73.4", "SD2neg": "71", "SD3neg": "68.6" },
+                                { "Month": "18", "SD0": "82.3", "SD1": "85", "SD2": "87.7", "SD3": "90.4", "SD1neg": "79.6", "SD2neg": "76.9", "SD3neg": "74.2" },
+                                { "Month": "24", "SD0": "87.8", "SD1": "90.9", "SD2": "93.9", "SD3": "97", "SD1neg": "84.8", "SD2neg": "81.7", "SD3neg": "78.7" },
+                                { "Month": "30", "SD0": "91.9", "SD1": "95.3", "SD2": "98.7", "SD3": "102.1", "SD1neg": "88.5", "SD2neg": "85.1", "SD3neg": "81.7" },
+                                { "Month": "36", "SD0": "96.1", "SD1": "99.8", "SD2": "103.5", "SD3": "107.2", "SD1neg": "92.4", "SD2neg": "88.7", "SD3neg": "85" },
+                                { "Month": "42", "SD0": "99.9", "SD1": "103.8", "SD2": "107.8", "SD3": "111.7", "SD1neg": "95.9", "SD2neg": "91.9", "SD3neg": "88" },
+                                { "Month": "48", "SD0": "103.3", "SD1": "107.5", "SD2": "111.7", "SD3": "115.9", "SD1neg": "99.1", "SD2neg": "94.9", "SD3neg": "90.7" },
+                                { "Month": "54", "SD0": "106.7", "SD1": "111.1", "SD2": "115.5", "SD3": "119.9", "SD1neg": "102.3", "SD2neg": "97.8", "SD3neg": "93.4" },
+                                { "Month": "60", "SD0": "110.0", "SD1": "114.6", "SD2": "119.2", "SD3": "123.9", "SD1neg": "105.3", "SD2neg": "100.7", "SD3neg": "96.1" }];
+
+var lfa_girls_0_to_5_values = [{ "Month": "0", "SD0": "49.1", "SD1": "51.0", "SD2": "52.9", "SD3": "54.7", "SD1neg": "47.3", "SD2neg": "45.4", "SD3neg": "43.6" },
+                                { "Month": "6", "SD0": "65.7", "SD1": "68.0", "SD2": "70.3", "SD3": "72.5", "SD1neg": "63.5", "SD2neg": "61.2", "SD3neg": "58.9" },
+                                { "Month": "12", "SD0": "74.0", "SD1": "76.6", "SD2": "79.2", "SD3": "81.7", "SD1neg": "71.4", "SD2neg": "68.9", "SD3neg": "66.3" },
+                                { "Month": "18", "SD0": "80.7", "SD1": "83.6", "SD2": "86.5", "SD3": "89.4", "SD1neg": "77.8", "SD2neg": "74.9", "SD3neg": "72.0" },
+                                { "Month": "24", "SD0": "86.4", "SD1": "89.6", "SD2": "92.9", "SD3": "96.1", "SD1neg": "83.2", "SD2neg": "80.0", "SD3neg": "76.7" },
+                                { "Month": "30", "SD0": "90.7", "SD1": "94.2", "SD2": "97.7", "SD3": "101.3", "SD1neg": "87.1", "SD2neg": "83.6", "SD3neg": "80.1" },
+                                { "Month": "36", "SD0": "95.1", "SD1": "98.9", "SD2": "102.7", "SD3": "106.5", "SD1neg": "91.2", "SD2neg": "87.4", "SD3neg": "83.6" },
+                                { "Month": "42", "SD0": "99.0", "SD1": "103.1", "SD2": "107.2", "SD3": "111.2", "SD1neg": "95", "SD2neg": "90.9", "SD3neg": "86.8" },
+                                { "Month": "48", "SD0": "102.7", "SD1": "107.0", "SD2": "111.3", "SD3": "115.7", "SD1neg": "98.4", "SD2neg": "94.1", "SD3neg": "89.8" },
+                                { "Month": "54", "SD0": "106.2", "SD1": "110.7", "SD2": "115.2", "SD3": "119.8", "SD1neg": "101.6", "SD2neg": "97.1", "SD3neg": "92.6" },
+                                { "Month": "60", "SD0": "109.4", "SD1": "114.2", "SD2": "118.9", "SD3": "123.7", "SD1neg": "104.7", "SD2neg": "99.9", "SD3neg": "95.2" }];
+
+
 var wfa_boys_0_to_5_meta = {};
 wfa_boys_0_to_5_meta.lines =  wfa_all_0_to_5_meta.lines.slice();
 wfa_boys_0_to_5_meta.title = "Weight vs Age, Boys (WHO)";
@@ -101,6 +254,26 @@ wfa_girls_2_to_20_zscores.unshift({"Month":"0","SD0":"3.2","SD1":"3.7","SD2":"4.
 var wfa_haiti_0_to_5 = {
   "meta" : wfa_haiti_0_to_5_meta,
   "data" : wfa_haiti_0_to_5_values
+};
+
+var hcfa_boys_0_to_5 = {
+    "meta": hcfa_boys_0_to_5_meta,
+    "data": hcfa_boys_0_to_5_values
+};
+
+var hcfa_girls_0_to_5 = {
+    "meta": hcfa_girls_0_to_5_meta,
+    "data": hcfa_girls_0_to_5_values
+};
+
+var lfa_boys_0_to_5 = {
+    "meta": lfa_boys_0_to_5_meta,
+    "data": lfa_boys_0_to_5_values
+};
+
+var lfa_girls_0_to_5 = {
+    "meta": lfa_girls_0_to_5_meta,
+    "data": lfa_girls_0_to_5_values
 };
 
 var wfa_boys_0_to_5 = {
@@ -161,7 +334,11 @@ function display_growth_chart(patient, el, chartType, dims) {
     'wfa_boys_0_to_5' : wfa_boys_0_to_5,
     'wfa_girls_0_to_5': wfa_girls_0_to_5,
     'wfa_boys_2_to_20' : wfa_boys_2_to_20,
-    'wfa_girls_2_to_20' : wfa_girls_2_to_20
+    'wfa_girls_2_to_20' : wfa_girls_2_to_20,
+    'hcfa_boys_0_to_5': hcfa_boys_0_to_5,
+    'hcfa_girls_0_to_5': hcfa_girls_0_to_5,
+    'lfa_girls_0_to_5': lfa_girls_0_to_5,
+    'lfa_boys_0_to_5': lfa_boys_0_to_5
   };
 
   var chartTypeKeys = [];
@@ -203,11 +380,25 @@ function display_growth_chart(patient, el, chartType, dims) {
   var xScale = d3.scale.linear()
     .domain([0, xMax])
     .range([padding, width - padding]);
-
-  var yScale = d3.scale.linear()
-    .domain([0, yMax])
+ // change default scaling of y axis based on chart, start at more reasonable number
+ if (chartType == "hcfa_boys_0_to_5" || chartType == "hcfa_girls_0_to_5")
+  {
+      var yScale = d3.scale.linear()
+    .domain([30, yMax])
     .range([height - padding, padding]);
-
+  }
+  else if(chartType == "lfa_boys_0_to_5" || chartType == "lfa_girls_0_to_5")
+  {
+    var yScale = d3.scale.linear()
+      .domain([30, yMax])
+      .range([height - padding, padding]);
+  }
+  else
+  {
+    var yScale = d3.scale.linear()
+      .domain([0, yMax])
+      .range([height - padding, padding]);
+  }
   // Line generating function
   var line = d3.svg.line()
     .interpolate("basis")
@@ -315,11 +506,28 @@ function display_growth_chart(patient, el, chartType, dims) {
   //        });
 
   // Axes text
-  svg.append("text")
+  // change it based on chart type
+   if (chartType == "hcfa_boys_0_to_5" || chartType == "hcfa_girls_0_to_5")
+  {
+      svg.append("text")
     .attr("text-anchor", "middle")
-    .attr("transform", "translate("+ (padding/3) +","+(height-padding)/2+")rotate(-90)")
-    .text("Weight (kg)");
-
+    .attr("transform", "translate(" + (padding / 3) + "," + (height - padding) / 2 + ")rotate(-90)")
+    .text("Circumference (cm)");
+  }
+  else if(chartType == "lfa_girls_0_to_5" || chartType == "lfa_boys_0_to_5")
+  {
+      svg.append("text")
+    .attr("text-anchor", "middle")
+    .attr("transform", "translate(" + (padding / 3) + "," + (height - padding) / 2 + ")rotate(-90)")
+    .text("Length (cm)");
+  }
+  else
+  {
+    svg.append("text")
+      .attr("text-anchor", "middle")
+      .attr("transform", "translate("+ (padding/3) +","+(height-padding)/2+")rotate(-90)")
+      .text("Weight (kg)");
+  }
   svg.append("text")
     .attr("text-anchor", "middle")
     .attr("transform", "translate("+ (width/2) +","+(height-(padding/3))+")")
@@ -496,7 +704,17 @@ function display_growth_chart(patient, el, chartType, dims) {
     var age_in_months = parseFloat(d[0]);
     var weight_in_kg = parseFloat(d[1]).toFixed(1);
     var textAge = 'Age: ' + getAgeText(age_in_months);
-    var textweight = 'Weight: ' + weight_in_kg + 'kg';
+    // change text based on chartType for tooltip
+    if (chartType == "hcfa_boys_0_to_5" || chartType == "hcfa_girls_0_to_5") {
+      var textweight = 'Circumference: ' + weight_in_kg + 'cm';
+    }
+    else if(chartType == "lfa_girls_0_to_5" || chartType == "lfa_boys_0_to_5")
+    {
+      var textweight = 'Length: ' + weight_in_kg + 'cm';
+    }
+    else {
+      var textweight = 'Weight: ' + weight_in_kg + 'kg';
+    }
     var text = textAge + '; ' + textweight;
 
     return text;
