@@ -25,6 +25,11 @@ Todos:
 - Labels on the lines, or a legend (%tile, malnourished/severely/normal); color for different lines
 - Improve tooltip style... [1](http://rveciana.github.com/geoexamples/d3js/d3js_electoral_map/tooltipCode.html#), [2](http://rveciana.github.com/geoexamples/?page=d3js/d3js_electoral_map/simpleTooltipCode.html), [3](http://bl.ocks.org/biovisualize/2973775)
 
+Additions:
+
+- Added metas and values for Head Circumference vs Age 0-5yrs for girls/boys based on WHO standards.
+- Added metas and values for Length vs Age 0-5yrs for girls/boys based on WHO Standards.
+
 Other Growth charts:
 
 - [OpenMRS Growth Chart module](https://wiki.openmrs.org/display/docs/Growth+Chart+Module)
@@ -34,6 +39,6 @@ Other Growth charts:
 - [Online MedCalc](http://www.medcalc.com/growth/)
 - [UK Growth Charts](http://www.rcpch.ac.uk/child-health/research-projects/uk-who-growth-charts/uk-who-growth-charts)
 
-Thank yous:
+Thank you:
 
 - to @ewheeler and the [PyGrowup](https://github.com/ewheeler/pygrowup) project for sharing the method to pre-process the WHO/CDC measurement data into json format.
