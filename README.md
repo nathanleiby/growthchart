@@ -29,6 +29,8 @@ Additions:
 
 - Added metas and values for Head Circumference vs Age 0-5yrs for girls/boys based on WHO standards.
 - Added metas and values for Length vs Age 0-5yrs for girls/boys based on WHO Standards.
+- Added checks to change Y axis label based on new chart types
+- Added checks to change tooltip text based on new chart types
 
 Other Growth charts:
 
