@@ -45,58 +45,6 @@ var wfa_all_0_to_5_meta = {
       "name":"0.1th"
     }]
 };
-
-var hcfa_boys_0_to_5_meta = {
-    "title": "Head Circumference vs Age, Boys (WHO)",
-    "lines": [{
-        "tag": "SD0",
-        "name": "50th"
-    }, {
-        "tag": "SD1neg",
-        "name": "15th"
-    }, {
-        "tag": "SD2neg",
-        "name": "2nd"
-    }, {
-        "tag": "SD2",
-        "name": "98th"
-    }, {
-        "tag": "SD1",
-        "name": "85th"
-    }, {
-        "tag": "SD3",
-        "name": "99.9th"
-    }, {
-        "tag": "SD3neg",
-        "name": "0.1th"
-    }]
-};
-
-var hcfa_girls_0_to_5_meta = {
-    "title": "Head Circumference vs Age, Girls (WHO)",
-    "lines": [{
-        "tag": "SD0",
-        "name": "50th"
-    }, {
-        "tag": "SD1neg",
-        "name": "15th"
-    }, {
-        "tag": "SD2neg",
-        "name": "2nd"
-    }, {
-        "tag": "SD2",
-        "name": "98th"
-    }, {
-        "tag": "SD1",
-        "name": "85th"
-    }, {
-        "tag": "SD3",
-        "name": "99.9th"
-    }, {
-        "tag": "SD3neg",
-        "name": "0.1th"
-    }]
-};
                                
 var hcfa_boys_0_to_5_values = [{ "Month": "0", "SD0": "34.5", "SD1": "35.7", "SD2": "37.0", "SD3": "38.3", "SD1neg": "33.2", "SD2neg": "31.9", "SD3neg": "30.7" },
                                 { "Month": "6", "SD0": "43.3", "SD1": "44.6", "SD2": "45.8", "SD3": "47.0", "SD1neg": "42.1", "SD2neg": "40.9", "SD3neg": "39.7" },
@@ -121,59 +69,7 @@ var hcfa_girls_0_to_5_values = [{ "Month": "0", "SD0": "33.9", "SD1": "35.1", "S
                                 { "Month": "48", "SD0": "49.3", "SD1": "50.8", "SD2": "52.2", "SD3": "53.6", "SD1neg": "47.9", "SD2neg": "46.5", "SD3neg": "45.1" },
                                 { "Month": "54", "SD0": "49.6", "SD1": "51.1", "SD2": "52.5", "SD3": "53.9", "SD1neg": "48.2", "SD2neg": "46.8", "SD3neg": "45.4" },
                                 { "Month": "60", "SD0": "49.9", "SD1": "51.3", "SD2": "52.8", "SD3": "54.2", "SD1neg": "48.5", "SD2neg": "47.1", "SD3neg": "45.7" }];
-
-var lfa_boys_0_to_5_meta = {
-    "title": "Length vs Age, Boys (WHO)",
-    "lines": [{
-        "tag": "SD0",
-        "name": "50th"
-    }, {
-        "tag": "SD1neg",
-        "name": "15th"
-    }, {
-        "tag": "SD2neg",
-        "name": "2nd"
-    }, {
-        "tag": "SD2",
-        "name": "98th"
-    }, {
-        "tag": "SD1",
-        "name": "85th"
-    }, {
-        "tag": "SD3",
-        "name": "99.9th"
-    }, {
-        "tag": "SD3neg",
-        "name": "0.1th"
-    }]
-};
-
-var lfa_girls_0_to_5_meta = {
-    "title": "Length vs Age, Girls (WHO)",
-    "lines": [{
-        "tag": "SD0",
-        "name": "50th"
-    }, {
-        "tag": "SD1neg",
-        "name": "15th"
-    }, {
-        "tag": "SD2neg",
-        "name": "2nd"
-    }, {
-        "tag": "SD2",
-        "name": "98th"
-    }, {
-        "tag": "SD1",
-        "name": "85th"
-    }, {
-        "tag": "SD3",
-        "name": "99.9th"
-    }, {
-        "tag": "SD3neg",
-        "name": "0.1th"
-    }]
-};
-
+ 
 var lfa_boys_0_to_5_values = [{ "Month": "0", "SD0": "49.9", "SD1": "51.8", "SD2": "53.7", "SD3": "55.6", "SD1neg": "48.0", "SD2neg": "46.1", "SD3neg": "44.2" },
                                 { "Month": "6", "SD0": "67.6", "SD1": "69.8", "SD2": "71.9", "SD3": "74.0", "SD1neg": "65.5", "SD2neg": "63.3", "SD3neg": "61.2" },
                                 { "Month": "12", "SD0": "75.7", "SD1": "78.1", "SD2": "80.5", "SD3": "82.9", "SD1neg": "73.4", "SD2neg": "71", "SD3neg": "68.6" },
@@ -198,6 +94,21 @@ var lfa_girls_0_to_5_values = [{ "Month": "0", "SD0": "49.1", "SD1": "51.0", "SD
                                 { "Month": "54", "SD0": "106.2", "SD1": "110.7", "SD2": "115.2", "SD3": "119.8", "SD1neg": "101.6", "SD2neg": "97.1", "SD3neg": "92.6" },
                                 { "Month": "60", "SD0": "109.4", "SD1": "114.2", "SD2": "118.9", "SD3": "123.7", "SD1neg": "104.7", "SD2neg": "99.9", "SD3neg": "95.2" }];
 
+var lfa_boys_0_to_5_meta = {};
+lfa_boys_0_to_5_meta.lines = wfa_all_0_to_5_meta.lines.slice();
+lfa_boys_0_to_5_meta.title = "Length vs Age, Boys (WHO)";
+
+var hcfa_boys_0_to_5_meta = {};
+hcfa_boys_0_to_5_meta.lines = wfa_all_0_to_5_meta.lines.slice();
+hcfa_boys_0_to_5_meta.title = "Head Circumference vs Age, Boys (WHO)";
+
+var lfa_girls_0_to_5_meta = {};
+lfa_girls_0_to_5_meta.lines = wfa_all_0_to_5_meta.lines.slice();
+lfa_girls_0_to_5_meta.title = "Length vs Age, Girls (WHO)";
+
+var hcfa_girls_0_to_5_meta = {};
+hcfa_girls_0_to_5_meta.lines = wfa_all_0_to_5_meta.lines.slice();
+hcfa_girls_0_to_5_meta.title = "Head Circumference vs Age, Girls (WHO)";
 
 var wfa_boys_0_to_5_meta = {};
 wfa_boys_0_to_5_meta.lines =  wfa_all_0_to_5_meta.lines.slice();
