@@ -1,5 +1,6 @@
 body {
-  font: 10px sans-serif;
+  /* font: 10px sans-serif; removed this to avoid changing all body font sizing, this is set for the text below */
+  text-align:center; /* added to center the chart in the containing element */
 }
 
 .axis path, .axis line {
@@ -25,6 +26,10 @@ body {
   opacity: 0.2;
 }
 
+.areaGirl {
+    fill: lightpink;
+    opacity: 0.2;
+}
 
 .dot {
   fill: black;
